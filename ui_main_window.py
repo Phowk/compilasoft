@@ -20,6 +20,8 @@ from PySide6.QtWidgets import (QApplication, QFrame, QGroupBox, QLabel,
     QMainWindow, QMenu, QMenuBar, QPushButton,
     QSizePolicy, QStatusBar, QTextEdit, QWidget)
 
+from translation import ruby_code, lexer
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
@@ -76,7 +78,7 @@ class Ui_MainWindow(object):
 "    font-weight: bold;\n"
 "    font-family: \"Segoe UI\", sans-serif;\n"
 "    letter-spacing: 0.5px;\n"
-"    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);\n"
+# "    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);\n"
 "}\n"
 "\n"
 "QPushButton:hover {\n"
@@ -110,7 +112,6 @@ class Ui_MainWindow(object):
 "    font-weight: bold;\n"
 "    font-family: \"Segoe UI\", sans-serif;\n"
 "    letter-spacing: 0.5px;\n"
-"    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);\n"
 "}\n"
 "\n"
 "QPushButton:hover {\n"
@@ -144,7 +145,6 @@ class Ui_MainWindow(object):
 "    font-weight: bold;\n"
 "    font-family: \"Segoe UI\", sans-serif;\n"
 "    letter-spacing: 0.5px;\n"
-"    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);\n"
 "}\n"
 "\n"
 "QPushButton:hover {\n"
@@ -178,7 +178,6 @@ class Ui_MainWindow(object):
 "    font-weight: bold;\n"
 "    font-family: \"Segoe UI\", sans-serif;\n"
 "    letter-spacing: 0.5px;\n"
-"    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);\n"
 "}\n"
 "\n"
 "QPushButton:hover {\n"
@@ -212,7 +211,6 @@ class Ui_MainWindow(object):
 "    font-weight: bold;\n"
 "    font-family: \"Segoe UI\", sans-serif;\n"
 "    letter-spacing: 0.5px;\n"
-"    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);\n"
 "}\n"
 "\n"
 "QPushButton:hover {\n"
@@ -246,7 +244,6 @@ class Ui_MainWindow(object):
 "    font-weight: bold;\n"
 "    font-family: \"Segoe UI\", sans-serif;\n"
 "    letter-spacing: 0.5px;\n"
-"    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);\n"
 "}\n"
 "\n"
 "QPushButton:hover {\n"
@@ -280,7 +277,7 @@ class Ui_MainWindow(object):
 "    font-weight: bold;\n"
 "    font-family: \"Segoe UI\", sans-serif;\n"
 "    letter-spacing: 0.5px;\n"
-"    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);\n"
+# "    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);\n"
 "}\n"
 "\n"
 "QPushButton:hover {\n"
@@ -377,6 +374,8 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
+        self.ejecutar_bt.clicked.connect(self.ejecutar)
+
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
@@ -386,7 +385,19 @@ class Ui_MainWindow(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'Terminal'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Code example</p></body></html>", None))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">INICIO</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    VARIABLE numero = 10</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; m"
+                        "argin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    SI numero &gt; 5 ENTONCES</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        IMPRIMIR &quot;Mayor que cinco&quot;</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    FIN_SI</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px"
+                        ";\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">FIN</p></body></html>", None))
         self.input_bt.setText(QCoreApplication.translate("MainWindow", u"Input", None))
         self.output_bt.setText(QCoreApplication.translate("MainWindow", u"Output", None))
         self.assign_bt.setText(QCoreApplication.translate("MainWindow", u"Assign", None))
@@ -404,3 +415,11 @@ class Ui_MainWindow(object):
         self.menuAyuda.setTitle(QCoreApplication.translate("MainWindow", u"Ayuda", None))
     # retranslateUi
 
+    def ejecutar(self):
+        print("Ejecutando...")
+        code = self.Code_space.toPlainText()
+        lexer_generator = lexer.Lexer(code)
+        tokens = lexer_generator.convert_to_tokens()
+        ruby_generator = ruby_code.RubyGenerator(tokens)
+        ruby_code_generated = ruby_generator.generate()
+        print(ruby_code_generated)
