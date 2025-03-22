@@ -493,7 +493,7 @@ QGroupBox::title {
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>nuevo.png</normaloff>nuevo.png</iconset>
+        <normaloff>imagenes/nuevo.png</normaloff>imagenes/nuevo.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="abrir_bt">
@@ -510,7 +510,7 @@ QGroupBox::title {
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>abrir.png</normaloff>abrir.png</iconset>
+        <normaloff>imagenes/abrir.png</normaloff>imagenes/abrir.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="ejecutar_bt">
@@ -527,7 +527,7 @@ QGroupBox::title {
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>ejecutar.png</normaloff>ejecutar.png</iconset>
+        <normaloff>imagenes/ejecutar.png</normaloff>imagenes/ejecutar.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="guardar_bt">
@@ -544,7 +544,7 @@ QGroupBox::title {
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>salvar.png</normaloff>salvar.png</iconset>
+        <normaloff>imagenes/salvar.png</normaloff>imagenes/salvar.png</iconset>
       </property>
      </widget>
     </widget>
