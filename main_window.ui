@@ -47,7 +47,7 @@ QPushButton:pressed {
      <string notr="true">background-color: rgb(155, 227, 252)</string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
+     <enum>QFrame::Shape::NoFrame</enum>
     </property>
     <widget class="QTextEdit" name="Code_space">
      <property name="geometry">
@@ -65,8 +65,11 @@ font: 12pt &quot;Terminal&quot;;</string>
      </property>
      <property name="html">
       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Terminal'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Code example&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
@@ -447,9 +450,8 @@ font: 14pt &quot;Terminal&quot;;</string>
      </property>
      <property name="font">
       <font>
-       <family>Segoe UI,sans-serif</family>
+       <family>Segoe UI</family>
        <pointsize>-1</pointsize>
-       <weight>75</weight>
        <italic>false</italic>
        <bold>true</bold>
       </font>
@@ -493,7 +495,7 @@ QGroupBox::title {
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>imagenes/nuevo.png</normaloff>imagenes/nuevo.png</iconset>
+        <normaloff>../imagenes/nuevo.png</normaloff>../imagenes/nuevo.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="abrir_bt">
@@ -510,7 +512,7 @@ QGroupBox::title {
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>imagenes/abrir.png</normaloff>imagenes/abrir.png</iconset>
+        <normaloff>../imagenes/abrir.png</normaloff>../imagenes/abrir.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="ejecutar_bt">
@@ -523,11 +525,11 @@ QGroupBox::title {
        </rect>
       </property>
       <property name="text">
-       <string>Ejecutar</string>
+       <string>Compilar</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>imagenes/ejecutar.png</normaloff>imagenes/ejecutar.png</iconset>
+        <normaloff>../imagenes/ejecutar.png</normaloff>../imagenes/ejecutar.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="guardar_bt">
@@ -544,7 +546,7 @@ QGroupBox::title {
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>imagenes/salvar.png</normaloff>imagenes/salvar.png</iconset>
+        <normaloff>../imagenes/salvar.png</normaloff>../imagenes/salvar.png</iconset>
       </property>
      </widget>
     </widget>
@@ -556,7 +558,7 @@ QGroupBox::title {
      <x>0</x>
      <y>0</y>
      <width>798</width>
-     <height>26</height>
+     <height>33</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuInicio">
