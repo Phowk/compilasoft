@@ -16,14 +16,17 @@ class RubyGenerator:
                 elif value == "VARIABLE":
                     i += 1  # Ir al nombre de la variable
                     var_name = self.tokens[i][1]
-                    
-                    # Verificar si viene una asignación con "="
+
                     if i + 1 < len(self.tokens) and self.tokens[i + 1][1] == "=":
                         i += 2  # Saltar el "="
-                        value = self.tokens[i][1]
-                        self.ruby_code.append(f"{var_name} = {value}")
+                        expr = []
+                        while i < len(self.tokens) and self.tokens[i][0] not in ["KEYWORD"]:
+                            expr.append(str(self.tokens[i][1]))
+                            i += 1
+                        i -= 1  # retroceder porque el while principal también incrementa
+                        ruby_expr = " ".join(expr)
+                        self.ruby_code.append(f"{var_name} = {ruby_expr}")
                     else:
-                        # Si no hay asignación, inicializar como nil
                         self.ruby_code.append(f"{var_name} = nil")
 
                 elif value == "INGRESAR":
@@ -56,23 +59,48 @@ class RubyGenerator:
                     self.ruby_code.append(f"while {ruby_condition}")
                 elif value == "FIN_MIENTRAS":
                     self.ruby_code.append("end")
+                elif value == "PARA":
+                    i += 1
+                    var_name = self.tokens[i][1]  # nombre de la variable
+                
+                    # Validar "DESDE"
+                    i += 1
+                    if self.tokens[i][1] == "DESDE":
+                        i += 1
+                        start_value = self.tokens[i][1]
+                    else:
+                        raise SyntaxError("Se esperaba 'DESDE' después de PARA")
+                
+                    # Validar "HASTA"
+                    i += 1
+                    if self.tokens[i][1] == "HASTA":
+                        i += 1
+                        end_value = self.tokens[i][1]
+                    else:
+                        raise SyntaxError("Se esperaba 'HASTA' después de DESDE")
+                
+                    # Validar "HACER"
+                    i += 1
+                    if self.tokens[i][1] == "HACER":
+                        pass
+                    else:
+                        raise SyntaxError("Se esperaba 'HACER' después de HASTA")
+                
+                    self.ruby_code.append(f"for {var_name} in {start_value}..{end_value}")
+
 
             elif token_type == "IDENTIFIER":
-                # Detectar patrón: variable = valor o expresión
                 var_name = value
                 if (i + 1 < len(self.tokens) and self.tokens[i + 1][1] == "="):
-                    i += 2  # Saltar el "="
+                    i += 2  # saltar "="
                     expr = []
                     while i < len(self.tokens) and self.tokens[i][0] not in ["KEYWORD"]:
                         expr.append(str(self.tokens[i][1]))
                         i += 1
-                    i -= 1  # Ajustar para no saltar el siguiente token en el while principal
+                    i -= 1
                     ruby_expr = " ".join(expr)
                     self.ruby_code.append(f"{var_name} = {ruby_expr}")
-            
-            elif token_type == "OPERATOR":
-                self.ruby_code.append(f"{value}")
-
+                    
             i += 1  # Avanzar al siguiente token
         
         return "\n".join(self.ruby_code)

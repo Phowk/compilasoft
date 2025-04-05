@@ -70,6 +70,8 @@ class Ui_Traducir(object):
 "    background-color: white;  /* Fondo blanco */\n"
 "    padding: 5px;  /* Espaciado interno */\n"
 "    font-size: 14pt; \n"
+"    color: black;  /* Texto en negro */\n"
+"    border-radius: 20px;  /* Bordes redondeados */"
 "}\n"
 "\n"
 "")

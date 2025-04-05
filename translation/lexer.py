@@ -4,9 +4,11 @@ class Lexer:
 
     KEYWORDS = {
     "INICIO", "FIN", "SI", "ENTONCES", "FIN_SI",
-    "IMPRIMIR","INGRESAR", "VARIABLE", "MIENTRAS", "HACER", "FIN_MIENTRAS"
+    "IMPRIMIR", "VARIABLE", "MIENTRAS", "HACER", "FIN_MIENTRAS",
+    "PARA", "DESDE", "HASTA", "FIN_PARA"
 }
-    OPERATORS = {"=", ">", "<", "+", "-", "*", "/", "%", ">=", "<=", }
+
+    OPERATORS = {"=", ">", "<", "+", "-", "*", "/", "%", ">=", "<="}
     STRING_PATTERN = r'"[^"]*"'  # Detectar cadenas
     NUMBER_PATTERN = r"\b\d+\b"   # Detectar números
     IDENTIFIER_PATTERN = r"\b[a-zA-Z_][a-zA-Z0-9_]*\b"  # Variables y palabras clave

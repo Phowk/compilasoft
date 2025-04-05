@@ -2,7 +2,7 @@ import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
 from welcome import Ui_Welcome
 from ui_main_window import Ui_MainWindow
-from traducir_ui import Ui_Traducir  # Importar la UI de la ventana traducir
+from traducir import Ui_Traducir  # Importar la UI de la ventana traducir
 from translation.lexer import Lexer
 from translation.ruby_code import RubyGenerator
 
@@ -11,6 +11,7 @@ class TraducirWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_Traducir()  # Cargar la interfaz de traducir.ui
         self.ui.setupUi(self)
+        self.ui.textEdit.setReadOnly(True)  # Deshabilitar la edición en el textEdit
         self.ui.textEdit.setPlainText(translated_code)  # Mostrar la traducción en la ventana
 
 class Inicio(QMainWindow):
@@ -34,6 +35,12 @@ class MainWindow(QMainWindow):
 
         # Conectar el botón "Ejecutar" con la función para mostrar la traducción
         self.ui.ejecutar_bt.clicked.connect(self.mostrar_traduccion)
+        self.ui.input_bt.setDisabled(True)
+        self.ui.output_bt.setDisabled(True)
+        self.ui.assign_bt.setDisabled(True)
+        self.ui.ifthen_bt.setDisabled(True)
+        self.ui.while_bt.setDisabled(True)
+        self.ui.for_bt.setDisabled(True)
 
     def mostrar_traduccion(self):
         # Obtener el código del QTextEdit
@@ -48,6 +55,7 @@ class MainWindow(QMainWindow):
         # Mostrar la ventana de traducción con el código Ruby
         self.traducir_window = TraducirWindow(ruby_code)
         self.traducir_window.show()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

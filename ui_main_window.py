@@ -375,7 +375,7 @@ class Ui_MainWindow(object):
         self.groupBox.setTitle("")
         self.nuevo_bt.setText(QCoreApplication.translate("MainWindow", u"Nuevo", None))
         self.abrir_bt.setText(QCoreApplication.translate("MainWindow", u"Abrir", None))
-        self.ejecutar_bt.setText(QCoreApplication.translate("MainWindow", u"Ejecutar", None))
+        self.ejecutar_bt.setText(QCoreApplication.translate("MainWindow", u"Compilar", None))
         self.guardar_bt.setText(QCoreApplication.translate("MainWindow", u"Guardar", None))
         self.menuInicio.setTitle(QCoreApplication.translate("MainWindow", u"Inicio", None))
         self.menuAyuda.setTitle(QCoreApplication.translate("MainWindow", u"Ayuda", None))
