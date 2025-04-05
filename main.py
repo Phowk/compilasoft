@@ -2,7 +2,7 @@ import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
 from welcome import Ui_Welcome
 from ui_main_window import Ui_MainWindow
-from traducir_ui import Ui_Traducir  # Importar la UI de la ventana traducir
+from traducir import Ui_Traducir  # Importar la UI de la ventana traducir
 from translation.lexer import Lexer
 from translation.ruby_code import RubyGenerator
 
