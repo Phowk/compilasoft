@@ -14,8 +14,8 @@ class Inicio(QMainWindow):
 
     def abrir_main_window(self):
         self.main_window = MainWindow()  
-        self.main_window.show()  
-        self.close()  
+        self.main_window.show()
+        self.close()
 
 
 class MainWindow(QMainWindow):
@@ -29,6 +29,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
 
     ventana_inicio = Inicio()  
-    ventana_inicio.show()  
+    ventana_inicio.show()
+
 
     sys.exit(app.exec())  # Inicia la aplicación

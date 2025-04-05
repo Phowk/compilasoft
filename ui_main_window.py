@@ -15,7 +15,7 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QCursor, QFont, QFontDatabase, QGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
-    QTransform)
+    QTransform, QTextCursor, QTextBlockFormat)
 from PySide6.QtWidgets import (QApplication, QFrame, QGroupBox, QLabel,
     QMainWindow, QMenu, QMenuBar, QPushButton,
     QSizePolicy, QStatusBar, QTextEdit, QWidget)
@@ -261,40 +261,7 @@ class Ui_MainWindow(object):
 "    color: white;\n"
 "}\n"
 "")
-        self.while_bt_3 = QPushButton(self.widget)
-        self.while_bt_3.setObjectName(u"while_bt_3")
-        self.while_bt_3.setGeometry(QRect(10, 370, 141, 51))
-        self.while_bt_3.setStyleSheet(u"QPushButton {\n"
-"    background-color: qlineargradient(\n"
-"        x1: 0, y1: 0, x2: 0, y2: 1,\n"
-"        stop: 0 #e0f2fe, stop: 1 #bae6fd\n"
-"    );\n"
-"    color: #1e3a8a;\n"
-"    border: 2px solid #60a5fa;\n"
-"    border-radius: 12px;\n"
-"    padding: 8px 16px;\n"
-"    font-size: 15px;\n"
-"    font-weight: bold;\n"
-"    font-family: \"Segoe UI\", sans-serif;\n"
-"    letter-spacing: 0.5px;\n"
-# "    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: qlineargradient(\n"
-"        x1: 0, y1: 0, x2: 0, y2: 1,\n"
-"        stop: 0 #bae6fd, stop: 1 #7dd3fc\n"
-"    );\n"
-"    border: 2px solid #3b82f6;\n"
-"    color: #1d4ed8;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    background-color: #60a5fa;\n"
-"    border: 2px solid #2563eb;\n"
-"    color: white;\n"
-"}\n"
-"")
+
         self.widget_2 = QWidget(self.frame)
         self.widget_2.setObjectName(u"widget_2")
         self.widget_2.setGeometry(QRect(10, 450, 771, 91))
@@ -404,7 +371,6 @@ class Ui_MainWindow(object):
         self.ifthen_bt.setText(QCoreApplication.translate("MainWindow", u"If-Then", None))
         self.while_bt.setText(QCoreApplication.translate("MainWindow", u"While", None))
         self.for_bt.setText(QCoreApplication.translate("MainWindow", u"For", None))
-        self.while_bt_3.setText(QCoreApplication.translate("MainWindow", u"Function", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Example text", None))
         self.groupBox.setTitle("")
         self.nuevo_bt.setText(QCoreApplication.translate("MainWindow", u"Nuevo", None))

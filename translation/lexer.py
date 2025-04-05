@@ -2,8 +2,11 @@ import re
 
 class Lexer:
 
-    KEYWORDS = {"INICIO", "FIN", "SI", "ENTONCES", "FIN_SI", "IMPRIMIR", "VARIABLE"}
-    OPERATORS = {"=", ">", "<", "+", "-"}
+    KEYWORDS = {
+    "INICIO", "FIN", "SI", "ENTONCES", "FIN_SI",
+    "IMPRIMIR","INGRESAR", "VARIABLE", "MIENTRAS", "HACER", "FIN_MIENTRAS"
+}
+    OPERATORS = {"=", ">", "<", "+", "-", "*", "/", "%", ">=", "<=", }
     STRING_PATTERN = r'"[^"]*"'  # Detectar cadenas
     NUMBER_PATTERN = r"\b\d+\b"   # Detectar números
     IDENTIFIER_PATTERN = r"\b[a-zA-Z_][a-zA-Z0-9_]*\b"  # Variables y palabras clave
@@ -13,7 +16,7 @@ class Lexer:
         self.tokens = []
 
     def convert_to_tokens(self):
-        words = re.findall(r'"[^"]*"|\b\w+\b|[=><+\-]', self.code)
+        words = re.findall(r'"[^"]*"|\b\w+\b|>=|<=|[=><+\-*/%]', self.code)
 
         for word in words:
             if word in self.KEYWORDS:
@@ -35,10 +38,11 @@ class Lexer:
 if __name__ == "__main__":
     code = """
     INICIO
-        VARIABLE nombre = 10
-        SI nombre > 5 ENTONCES
-            IMPRIMIR "Mayor que cinco"
-        FIN_SI
+        VARIABLE i = 0
+        MIENTRAS i < 5 HACER
+            IMPRIMIR "Hola"
+            i = i + 1
+        FIN_MIENTRAS
     FIN
     """
     lexer = Lexer(code)
