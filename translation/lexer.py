@@ -9,7 +9,7 @@ class Lexer:
 }
     TYPES = {"NUMERO", "DECIMAL", "FLOTANTE", "CADENA"}
 
-    OPERATORS = {"=", ">", "<", "+", "-", "*", "/", "%", ">=", "<="}
+    OPERATORS = {"=", "==", "!=", ">", "<", "+", "-", "*", "/", "%", ">=", "<="}
     STRING_PATTERN = r'"[^"]*"'  # Detectar cadenas
     NUMBER_PATTERN = r"\b\d+\b"   # Detectar números
     IDENTIFIER_PATTERN = r"\b[a-zA-Z_][a-zA-Z0-9_]*\b"  # Variables y palabras clave
@@ -19,7 +19,7 @@ class Lexer:
         self.tokens = []
 
     def convert_to_tokens(self):
-        words = re.findall(r'"[^"]*"|\b\w+\b|>=|<=|[=><+\-*/%]', self.code)
+        words = re.findall(r'"[^"]*"|\b\w+\b|==|!=|>=|<=|[=><+\-*/%]', self.code)
 
         for word in words:
             if word in self.TYPES:
