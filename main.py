@@ -259,7 +259,7 @@ class MainWindow(QMainWindow):
 
     def insertar_if(self):
         cursor = self.ui.Code_space.textCursor()
-        self.ui.Code_space.insertPlainText("SI __condicion__ ENTONCES\n\n\t__instrucciones_\n\nFIN_SI")
+        self.ui.Code_space.insertPlainText("SI __condicion__ ENTONCES\n\n\t__instrucciones__\n\nSINO\n\n__instrucciones__\n\nFIN_SI")
         self.ui.Code_space.setTextCursor(cursor)
         cursor.movePosition(QTextCursor.EndOfLine)
         self.ui.Code_space.setFocus()
