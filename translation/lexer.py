@@ -3,10 +3,11 @@ import re
 class Lexer:
 
     KEYWORDS = {
-    "INICIO", "FIN", "SI", "ENTONCES", "FIN_SI",
+    "INICIO", "FIN", "SI", "SINO", "ENTONCES", "FIN_SI", "INGRESAR",
     "IMPRIMIR", "VARIABLE", "MIENTRAS", "HACER", "FIN_MIENTRAS",
-    "PARA", "DESDE", "HASTA", "FIN_PARA"
+    "PARA", "DESDE", "HASTA", "FIN_PARA", "NUMERO", "DECIMAL"
 }
+    TYPES = {"NUMERO", "DECIMAL", "FLOTANTE", "CADENA"}
 
     OPERATORS = {"=", ">", "<", "+", "-", "*", "/", "%", ">=", "<="}
     STRING_PATTERN = r'"[^"]*"'  # Detectar cadenas
@@ -21,7 +22,9 @@ class Lexer:
         words = re.findall(r'"[^"]*"|\b\w+\b|>=|<=|[=><+\-*/%]', self.code)
 
         for word in words:
-            if word in self.KEYWORDS:
+            if word in self.TYPES:
+                self.tokens.append(("TYPE", word))
+            elif word in self.KEYWORDS:
                 self.tokens.append(("KEYWORD", word))
             elif word in self.OPERATORS:
                 self.tokens.append(("OPERATOR", word))

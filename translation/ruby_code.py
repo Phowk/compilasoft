@@ -20,19 +20,41 @@ class RubyGenerator:
                     if i + 1 < len(self.tokens) and self.tokens[i + 1][1] == "=":
                         i += 2  # Saltar el "="
                         expr = []
-                        while i < len(self.tokens) and self.tokens[i][0] not in ["KEYWORD"]:
+                        while i < len(self.tokens):
+                            # Si empieza una nueva asignación, detenemos
+                            if (
+                                self.tokens[i][0] == "IDENTIFIER" and 
+                                i + 1 < len(self.tokens) and self.tokens[i + 1][1] == "="
+                            ):
+                                break
+                            # Si viene una palabra clave que indica otra estructura
+                            if self.tokens[i][0] == "KEYWORD":
+                                break
                             expr.append(str(self.tokens[i][1]))
                             i += 1
                         i -= 1  # retroceder porque el while principal también incrementa
                         ruby_expr = " ".join(expr)
                         self.ruby_code.append(f"{var_name} = {ruby_expr}")
                     else:
-                        self.ruby_code.append(f"{var_name} = nil")
+                        self.ruby_code.append(f'{var_name} = ""')
 
                 elif value == "INGRESAR":
                     i += 1
                     var_name = self.tokens[i][1]
-                    self.ruby_code.append(f"{var_name} = gets.chomp")
+                    input_conversion = ".chomp"
+
+                    # Verifica si hay un tercer token (el tipo)
+                    if i + 1 < len(self.tokens) and self.tokens[i + 1][0] == "TYPE":
+                        i += 1
+                        tipo = self.tokens[i][1]
+                        if tipo == "NUMERO":
+                            input_conversion += ".to_i"
+                        elif tipo == "DECIMAL":
+                            input_conversion += ".to_f"
+                        # podrías agregar más casos como .to_s si lo deseas
+
+                    self.ruby_code.append(f"{var_name} = gets{input_conversion}")
+
                 elif value == "SI":
                     i += 1
                     condition = []
@@ -45,9 +67,39 @@ class RubyGenerator:
                     self.ruby_code.append("  # Código dentro del if")
                 elif value == "IMPRIMIR":
                     i += 1
-                    text = self.tokens[i][1]
-                    self.ruby_code.append(f'puts {text}')
-                elif value == "FIN_SI":
+                    expr = []
+                    while i < len(self.tokens):
+                        token_type, token_val = self.tokens[i]
+
+                        # Si empieza una nueva asignación, detenemos
+                        if (
+                            token_type == "IDENTIFIER" and 
+                            i + 1 < len(self.tokens) and self.tokens[i + 1][1] == "="
+                        ):
+                            i -= 1  # Retroceder porque el while principal incrementa
+                            break
+                        
+                        # Si viene una palabra clave, terminamos la expresión
+                        if token_type == "KEYWORD":
+                            i -= 1
+                            break
+                        
+                        if token_type == "IDENTIFIER":
+                            # Convertir identificador si hay cadena antes o concatenación
+                            if len(expr) >= 1 and (expr[-1] == '+' or '"' in expr[-1]):
+                                expr.append(f"{token_val}.to_s")
+                            else:
+                                expr.append(token_val)
+                        else:
+                            expr.append(str(token_val))
+
+                        i += 1
+
+                    ruby_expr = " ".join(expr)
+                    self.ruby_code.append(f"puts {ruby_expr}")
+                elif value == "SINO":
+                    self.ruby_code.append("else")
+                elif value == "FIN_SI" or value == "FIN_PARA":
                     self.ruby_code.append("end")
                 elif value == "MIENTRAS":
                     i += 1
@@ -95,13 +147,27 @@ class RubyGenerator:
                     i += 2  # saltar "="
                     expr = []
                     while i < len(self.tokens) and self.tokens[i][0] not in ["KEYWORD"]:
+                        if (
+                            self.tokens[i][0] == "IDENTIFIER" and 
+                            i + 1 < len(self.tokens) and self.tokens[i + 1][1] == "="
+                        ):
+                            break
+                        # Si viene una palabra clave que indica otra estructura
+                        if self.tokens[i][0] == "KEYWORD":
+                            break
                         expr.append(str(self.tokens[i][1]))
                         i += 1
                     i -= 1
                     ruby_expr = " ".join(expr)
                     self.ruby_code.append(f"{var_name} = {ruby_expr}")
-                    
+                            
             i += 1  # Avanzar al siguiente token
-        
+        self.ruby_code.append("""
+                              require 'io/console'
+puts
+puts "----------------------------------"
+puts "Presiona una tecla para cerrar..."
+STDIN.getch  # Espera una tecla sin necesidad de presionar Enter
+                              """)
         return "\n".join(self.ruby_code)
 

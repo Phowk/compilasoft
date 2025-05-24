@@ -1,11 +1,14 @@
 import sys, os
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QFileDialog
+from PySide6.QtGui import QTextCursor
 from welcome import Ui_Welcome
 from ui_main_window import Ui_MainWindow
 from traducir import Ui_Traducir  # Importar la UI de la ventana traducir
 from translation.lexer import Lexer
 from translation.ruby_code import RubyGenerator
-
+from translation import ruby_code, lexer
+import subprocess
+import tempfile
 
 class TraducirWindow(QMainWindow):
     def __init__(self, translated_code):
@@ -38,12 +41,22 @@ class MainWindow(QMainWindow):
 
         # Conectar el botón "Ejecutar" con la función para mostrar la traducción
         self.ui.ejecutar_bt.clicked.connect(self.mostrar_traduccion)
-        self.ui.input_bt.setDisabled(True)
-        self.ui.output_bt.setDisabled(True)
-        self.ui.assign_bt.setDisabled(True)
-        self.ui.ifthen_bt.setDisabled(True)
-        self.ui.while_bt.setDisabled(True)
-        self.ui.for_bt.setDisabled(True)
+        self.ui.abrir_bt.clicked.connect(self.abrir_archivo)
+        self.ui.ejecutar_bt.clicked.connect(self.traducir)
+        self.ui.correr_bt.clicked.connect(self.ejecutar_codigo)
+        # En Code_Space, insertar INICIO primero inicio, luego FIN y focus al QTextEdit en medio de ellos
+        self.ui.Code_space.setPlainText("INICIO\n\n\nFIN")
+        self.ui.Code_space.setFocus()
+
+        self.ui.input_bt.clicked.connect(self.insertar_input)
+        self.ui.output_bt.clicked.connect(self.insertar_output)
+        self.ui.assign_bt.clicked.connect(self.asignar_variable) 
+        self.ui.ifthen_bt.clicked.connect(self.insertar_if)
+        self.ui.while_bt.clicked.connect(self.insertar_while)
+        self.ui.for_bt.clicked.connect(self.insertar_for)
+
+
+        self.archivo_actual = None  # Variable para almacenar el archivo actual
 
     def mostrar_traduccion(self):
     # Limpiar mensajes anteriores
@@ -65,6 +78,7 @@ class MainWindow(QMainWindow):
 
             ruby_generator = RubyGenerator(tokens)
             ruby_code = ruby_generator.generate()
+            ruby_code = ruby_code.split("# Fin del programa")[0] + "# Fin del programa"
 
             self.traducir_window = TraducirWindow(ruby_code)
             self.traducir_window.show()
@@ -81,6 +95,11 @@ class MainWindow(QMainWindow):
             if tipo == "KEYWORD" and valor == "VARIABLE":
                 if i + 1 < len(tokens) and tokens[i + 1][0] == "IDENTIFIER":
                     variables_definidas.add(tokens[i + 1][1])
+
+            elif valor == "PARA":
+                if i + 1 < len(tokens) and tokens[i + 1][0] == "IDENTIFIER":
+                    variables_definidas.add(tokens[i + 1][1])
+
 
             # Verificar uso de variables no definidas
             if tipo == "IDENTIFIER":
@@ -104,7 +123,7 @@ class MainWindow(QMainWindow):
     
     def confirmar_nuevo_codigo(self):
         contenido = self.ui.Code_space.toPlainText().strip()
-        if contenido and contenido != "INICIO\nFIN":
+        if contenido and contenido != "INICIO\n\n\nFIN":
             respuesta = QMessageBox.question(
                 self,
                 "Confirmar",
@@ -126,7 +145,8 @@ class MainWindow(QMainWindow):
             self.limpiar_editor()
             
     def limpiar_editor(self):
-        self.ui.Code_space.setPlainText("INICIO\nFIN")
+        self.ui.Code_space.setPlainText("INICIO\n\n\nFIN")
+        self.ui.Code_space.setFocus()
 
     def guardar_codigo(self):
         # Pedir nombre base del archivo (se usará para ambos archivos)
@@ -168,17 +188,99 @@ class MainWindow(QMainWindow):
                 return False
         else:
             return False  # El usuario canceló
+        
+    def abrir_archivo(self):
+        archivo, _ = QFileDialog.getOpenFileName(self, "Abrir archivo", "", "Archivos de texto (*.txt)")
+        if archivo:
+            with open(archivo, "r", encoding="utf-8") as f:
+                contenido = f.read()
+                self.ui.Code_space.setPlainText(contenido)
+        self.archivo_actual = archivo
 
 
+    def traducir(self):
+        print("Ejecutando...")
+        code = self.ui.Code_space.toPlainText()
+        lexer_generator = lexer.Lexer(code)
+        tokens = lexer_generator.convert_to_tokens()
+        ruby_generator = ruby_code.RubyGenerator(tokens)
+        ruby_code_generated = ruby_generator.generate()
 
+        # Create a temporary file
+        with tempfile.NamedTemporaryFile(suffix=".rb", delete=False) as temp_file:
+            temp_file.write(ruby_code_generated.encode('utf-8'))
+            temp_file_path = temp_file.name
 
+        print(f"Ruby code generated and saved to: {temp_file_path}\n\n")
+        self.archivo_actual = temp_file_path #seteo la variable para ejecutar el archivo
+    
+    def ejecutar_codigo(self):
+        if not self.archivo_actual:
+            QMessageBox.warning(self, "Error", "Primero se debe traducir el codigo.")
+            return
+        print(self.archivo_actual)
 
+        script_ruby = os.path.abspath(self.archivo_actual)
+        subprocess.Popen(
+            ["ruby", script_ruby],
+            creationflags=subprocess.CREATE_NEW_CONSOLE
+        )
 
+        # result = subprocess.run(['ruby', self.archivo_actual], capture_output=True, text=True)
+        # print(f"Salida de Ruby:\n{result.stdout}")
+        # print(f"Errores:\n{result.stderr}")
 
+        # # Mostrar la salida en un QMessageBox
+        # if result.stdout:
+        #     QMessageBox.information(self, "Salida de Ruby", result.stdout)
+        # if result.stderr:
+        #     QMessageBox.critical(self, "Errores de Ruby", result.stderr)
+
+    def insertar_input(self):
+        cursor = self.ui.Code_space.textCursor()
+        self.ui.Code_space.insertPlainText("INGRESAR __variable__")
+        self.ui.Code_space.setTextCursor(cursor)
+        cursor.movePosition(QTextCursor.EndOfLine)
+        self.ui.Code_space.setFocus()
+
+    def insertar_output(self):
+        cursor = self.ui.Code_space.textCursor()
+        self.ui.Code_space.insertPlainText("IMPRIMIR __variable__")
+        self.ui.Code_space.setTextCursor(cursor)
+        cursor.movePosition(QTextCursor.EndOfLine)
+        self.ui.Code_space.setFocus()
+
+    def asignar_variable(self):
+        cursor = self.ui.Code_space.textCursor()
+        self.ui.Code_space.insertPlainText("__variable__ = __valor__")
+        self.ui.Code_space.setTextCursor(cursor)
+        cursor.movePosition(QTextCursor.EndOfLine)
+        self.ui.Code_space.setFocus()
+
+    def insertar_if(self):
+        cursor = self.ui.Code_space.textCursor()
+        self.ui.Code_space.insertPlainText("SI __condicion__ ENTONCES\n\n\t__instrucciones_\n\nFIN_SI")
+        self.ui.Code_space.setTextCursor(cursor)
+        cursor.movePosition(QTextCursor.EndOfLine)
+        self.ui.Code_space.setFocus()
+    
+    def insertar_while(self):
+        cursor = self.ui.Code_space.textCursor()
+        self.ui.Code_space.insertPlainText("MIENTRAS __condicion__ HACER\n\n\t__instrucciones__\n\nFIN_MIENTRAS")
+        self.ui.Code_space.setTextCursor(cursor)
+        cursor.movePosition(QTextCursor.EndOfLine)
+        self.ui.Code_space.setFocus()
+
+    def insertar_for(self):
+        cursor = self.ui.Code_space.textCursor()
+        self.ui.Code_space.insertPlainText("PARA __variable__ DESDE __ini__ HASTA __fin__ HACER\n\n\t__instrucciones__\n\nFIN_PARA")
+        self.ui.Code_space.setTextCursor(cursor)
+        cursor.movePosition(QTextCursor.EndOfLine)
+        self.ui.Code_space.setFocus()
+
+            
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-
     ventana_inicio = Inicio()  # Iniciar la ventana de bienvenida
     ventana_inicio.show()
-
     sys.exit(app.exec())  # Iniciar la aplicación

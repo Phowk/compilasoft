@@ -58,6 +58,8 @@ class Ui_MainWindow(object):
         self.Code_space.setStyleSheet(u"background-color: white;\n"
 "color: black;\n"
 "font: 12pt \"Terminal\";")
+        self.Code_space.setTabStopDistance(49.000000000000000)
+
         self.widget = QWidget(self.frame)
         self.widget.setObjectName(u"widget")
         self.widget.setGeometry(QRect(619, 9, 161, 431))
@@ -315,8 +317,14 @@ class Ui_MainWindow(object):
         self.ejecutar_bt.setObjectName(u"ejecutar_bt")
         self.ejecutar_bt.setGeometry(QRect(360, 40, 111, 31))
         icon2 = QIcon()
-        icon2.addFile(u"imagenes/ejecutar.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        icon2.addFile(u"imagenes/ruby.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.ejecutar_bt.setIcon(icon2)
+        self.correr_bt = QPushButton(self.groupBox)
+        self.correr_bt.setObjectName(u"correr_bt")
+        self.correr_bt.setGeometry(QRect(480, 40, 111, 31))
+        icon2 = QIcon()
+        icon2.addFile(u"imagenes/ejecutar.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.correr_bt.setIcon(icon2)
         self.guardar_bt = QPushButton(self.groupBox)
         self.guardar_bt.setObjectName(u"guardar_bt")
         self.guardar_bt.setGeometry(QRect(240, 40, 111, 31))
@@ -324,25 +332,15 @@ class Ui_MainWindow(object):
         icon3.addFile(u"imagenes/salvar.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.guardar_bt.setIcon(icon3)
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QMenuBar(MainWindow)
-        self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 798, 26))
-        self.menuInicio = QMenu(self.menubar)
-        self.menuInicio.setObjectName(u"menuInicio")
-        self.menuAyuda = QMenu(self.menubar)
-        self.menuAyuda.setObjectName(u"menuAyuda")
-        MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
-        self.menubar.addAction(self.menuInicio.menuAction())
-        self.menubar.addAction(self.menuAyuda.menuAction())
 
         self.retranslateUi(MainWindow)
 
-        self.ejecutar_bt.clicked.connect(self.ejecutar)
-
+        # self.ejecutar_bt.clicked.connect(self.ejecutar)
+        self.abrir_bt.clicked.connect(self.abrir)
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
@@ -365,27 +363,41 @@ class Ui_MainWindow(object):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px"
                         ";\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">FIN</p></body></html>", None))
+        self.Code_space.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Escribe codigo aqui", None))
         self.input_bt.setText(QCoreApplication.translate("MainWindow", u"Input", None))
         self.output_bt.setText(QCoreApplication.translate("MainWindow", u"Output", None))
         self.assign_bt.setText(QCoreApplication.translate("MainWindow", u"Assign", None))
         self.ifthen_bt.setText(QCoreApplication.translate("MainWindow", u"If-Then", None))
         self.while_bt.setText(QCoreApplication.translate("MainWindow", u"While", None))
         self.for_bt.setText(QCoreApplication.translate("MainWindow", u"For", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Example text", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"", None))
         self.groupBox.setTitle("")
         self.nuevo_bt.setText(QCoreApplication.translate("MainWindow", u"Nuevo", None))
         self.abrir_bt.setText(QCoreApplication.translate("MainWindow", u"Abrir", None))
         self.ejecutar_bt.setText(QCoreApplication.translate("MainWindow", u"Compilar", None))
+        self.correr_bt.setText(QCoreApplication.translate("MainWindow", u"Ejecutar", None))
         self.guardar_bt.setText(QCoreApplication.translate("MainWindow", u"Guardar", None))
-        self.menuInicio.setTitle(QCoreApplication.translate("MainWindow", u"Inicio", None))
-        self.menuAyuda.setTitle(QCoreApplication.translate("MainWindow", u"Ayuda", None))
     # retranslateUi
 
-    def ejecutar(self):
-        print("Ejecutando...")
-        code = self.Code_space.toPlainText()
-        lexer_generator = lexer.Lexer(code)
-        tokens = lexer_generator.convert_to_tokens()
-        ruby_generator = ruby_code.RubyGenerator(tokens)
-        ruby_code_generated = ruby_generator.generate()
-        print(ruby_code_generated)
+#     def ejecutar(self):
+#         print("Ejecutando...")
+#         code = self.Code_space.toPlainText()
+#         lexer_generator = lexer.Lexer(code)
+#         tokens = lexer_generator.convert_to_tokens()
+#         ruby_generator = ruby_code.RubyGenerator(tokens)
+#         ruby_code_generated = ruby_generator.generate()
+#         print(ruby_code_generated)
+
+    def abrir(self):
+        print("Abriendo archivo...")
+        # Aquí puedes implementar la lógica para abrir un archivo y cargar su contenido en el QTextEdit
+        # Por ejemplo, usando un QFileDialog para seleccionar el archivo y luego leer su contenido.
+
+if __name__ == "__main__":
+    import sys
+    app = QApplication(sys.argv)
+    MainWindow = QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec())
