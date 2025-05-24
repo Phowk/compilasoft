@@ -374,7 +374,7 @@ class Ui_MainWindow(object):
         self.groupBox.setTitle("")
         self.nuevo_bt.setText(QCoreApplication.translate("MainWindow", u"Nuevo", None))
         self.abrir_bt.setText(QCoreApplication.translate("MainWindow", u"Abrir", None))
-        self.ejecutar_bt.setText(QCoreApplication.translate("MainWindow", u"Compilar", None))
+        self.ejecutar_bt.setText(QCoreApplication.translate("MainWindow", u"Traducir", None))
         self.correr_bt.setText(QCoreApplication.translate("MainWindow", u"Ejecutar", None))
         self.guardar_bt.setText(QCoreApplication.translate("MainWindow", u"Guardar", None))
     # retranslateUi
